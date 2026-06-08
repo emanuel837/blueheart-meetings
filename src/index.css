@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #233667;
+  --primary-light: #2d4a8a;
+  --primary-dark: #1a2850;
+  --accent: #4a90d9;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.booking-calendar {
+  --rdp-accent-color: var(--primary);
+  --rdp-accent-background-color: color-mix(in srgb, var(--primary) 12%, white);
+  --rdp-day-height: 44px;
+  --rdp-day-width: 44px;
+  --rdp-selected-border: 2px solid var(--primary);
+}
+
+.booking-calendar .rdp-day_button:hover:not([disabled]) {
+  background-color: color-mix(in srgb, var(--primary) 8%, white);
+}
+
+.booking-calendar .rdp-selected .rdp-day_button {
+  background-color: var(--primary);
+  color: white;
+}
+
+.booking-calendar .rdp-today:not(.rdp-selected) .rdp-day_button {
+  border: 2px solid var(--accent);
+}
