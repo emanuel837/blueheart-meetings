@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Clock } from 'lucide-react';
 import { getBookedSlots } from '../../firebase/meetings';
-import { generateTimeSlots } from '../../utils/timeSlots';
+import { filterPastSlotsForToday, generateTimeSlots } from '../../utils/timeSlots';
 import { formatDateKey } from '../../utils/dates';
 
 function TimeSelect({ branch, selectedDate, selectedTime, onSelect }) {
@@ -12,9 +12,9 @@ function TimeSelect({ branch, selectedDate, selectedTime, onSelect }) {
   const workingHours = branch?.workingHours ?? { start: '09:00', end: '17:00' };
   const slotDuration = branch?.slotDuration ?? 30;
 
-  const slots = generateTimeSlots(
-    workingHours.start,
-    workingHours.end,
+  const slots = filterPastSlotsForToday(
+    generateTimeSlots(workingHours.start, workingHours.end, slotDuration),
+    selectedDate,
     slotDuration
   );
 

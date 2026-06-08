@@ -1,25 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Lock } from 'lucide-react';
 import { auth } from '../../firebase/config';
+import { isAdminSetupComplete } from '../../firebase/setup';
 import { useAuth } from '../../context/AuthContext';
 import { getAuthErrorMessage } from '../../utils/authErrors';
 
 function AdminLogin() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const [setupComplete, setSetupComplete] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  if (authLoading) {
+  useEffect(() => {
+    isAdminSetupComplete()
+      .then(setSetupComplete)
+      .catch(() => setSetupComplete(false));
+  }, []);
+
+  if (authLoading || setupComplete === null) {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <p className="text-gray-500">טוען...</p>
       </main>
     );
+  }
+
+  if (!setupComplete) {
+    return <Navigate to="/admin/setup" replace />;
   }
 
   if (user) {

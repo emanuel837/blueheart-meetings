@@ -7,13 +7,14 @@ import {
   startOfDay,
   startOfWeek,
 } from 'date-fns';
+import { formatIsraelDateKey } from './dates';
 
 export function getMeetingDateTime(meeting) {
   return parse(`${meeting.date} ${meeting.time}`, 'yyyy-MM-dd HH:mm', new Date());
 }
 
 export function getMeetingsToday(meetings) {
-  const today = format(new Date(), 'yyyy-MM-dd');
+  const today = formatIsraelDateKey(new Date());
   return meetings.filter((meeting) => meeting.date === today);
 }
 

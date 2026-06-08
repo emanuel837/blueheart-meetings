@@ -1,3 +1,5 @@
+import { getIsraelMinutesFromMidnight, isTodayInIsrael } from './dates';
+
 export function generateTimeSlots(start, end, durationMinutes) {
   const slots = [];
   const [startHour, startMinute] = start.split(':').map(Number);
@@ -16,4 +18,17 @@ export function generateTimeSlots(start, end, durationMinutes) {
   }
 
   return slots;
+}
+
+export function filterPastSlotsForToday(slots, selectedDate, minLeadMinutes = 30) {
+  if (!selectedDate || !isTodayInIsrael(selectedDate)) {
+    return slots;
+  }
+
+  const minSlotMinutes = getIsraelMinutesFromMidnight() + minLeadMinutes;
+
+  return slots.filter((slot) => {
+    const [hours, minutes] = slot.split(':').map(Number);
+    return hours * 60 + minutes >= minSlotMinutes;
+  });
 }

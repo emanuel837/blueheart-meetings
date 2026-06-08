@@ -5,7 +5,7 @@ import AdminLayout from './components/admin/AdminLayout'
 import BookingPage from './pages/BookingPage'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminSetup from './pages/admin/AdminSetup'
-import AdminDashboard from './pages/admin/AdminDashboard'
+import Dashboard from './pages/admin/Dashboard'
 import AdminMeetings from './pages/admin/AdminMeetings'
 import AdminExperts from './pages/admin/AdminExperts'
 import AdminBranches from './pages/admin/AdminBranches'
@@ -18,8 +18,8 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<BookingPage />} />
-          <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/setup" element={<AdminSetup />} />
+          <Route path="/admin/seed" element={<SeedPage />} />
           <Route
             element={
               <ProtectedRoute>
@@ -27,12 +27,12 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/meetings" element={<AdminMeetings />} />
             <Route path="/admin/experts" element={<AdminExperts />} />
             <Route path="/admin/branches" element={<AdminBranches />} />
           </Route>
-          <Route path="/admin/seed" element={<SeedPage />} />
+          <Route path="/admin" element={<AdminLogin />} />
           <Route path="/success" element={<SuccessPage />} />
         </Routes>
       </AuthProvider>

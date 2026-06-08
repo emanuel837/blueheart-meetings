@@ -1,4 +1,4 @@
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { format, parse } from 'date-fns';
 import { he } from 'date-fns/locale';
 import { Calendar, CheckCircle, MapPin, Clock, User } from 'lucide-react';
@@ -64,7 +64,7 @@ function SuccessPage() {
           </p>
         </div>
 
-        <div className="mt-8 space-y-3">
+        <div className="mt-8">
           <a
             href={calendarUrl}
             target="_blank"
@@ -74,13 +74,6 @@ function SuccessPage() {
             <Calendar className="h-5 w-5" />
             הוספה ליומן Google
           </a>
-
-          <Link
-            to="/"
-            className="block w-full rounded-lg border-2 border-[var(--primary)] py-3 text-[var(--primary)] font-semibold hover:bg-[var(--primary)]/5 transition-colors"
-          >
-            קביעת פגישה נוספת
-          </Link>
         </div>
       </div>
     </main>
