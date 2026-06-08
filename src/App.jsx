@@ -4,6 +4,7 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 import AdminLayout from './components/admin/AdminLayout'
 import BookingPage from './pages/BookingPage'
 import AdminLogin from './pages/admin/AdminLogin'
+import AdminSetup from './pages/admin/AdminSetup'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminMeetings from './pages/admin/AdminMeetings'
 import AdminExperts from './pages/admin/AdminExperts'
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<BookingPage />} />
           <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/setup" element={<AdminSetup />} />
           <Route
             element={
               <ProtectedRoute>
