@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Lock } from 'lucide-react';
 import { auth } from '../../firebase/config';
 import { useAuth } from '../../context/AuthContext';
-import { getAuthErrorMessage } from '../../utils/authErrors';
+
+function formatFirebaseError(error) {
+  if (!error) return 'Unknown error';
+
+  const code = error.code ? `[${error.code}] ` : '';
+  const message = error.message || String(error);
+  return `${code}${message}`;
+}
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -13,6 +20,14 @@ function AdminLogin() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    console.log('[AdminLogin] Auth instance:', {
+      authReady: Boolean(auth),
+      appName: auth?.app?.name,
+      currentUser: auth?.currentUser?.email ?? null,
+    });
+  }, []);
 
   if (authLoading) {
     return (
@@ -32,10 +47,14 @@ function AdminLogin() {
     setError(null);
 
     try {
+      console.log('[AdminLogin] Attempting sign in for:', email.trim());
       await signInWithEmailAndPassword(auth, email.trim(), password);
       navigate('/admin/dashboard', { replace: true });
     } catch (err) {
-      setError(getAuthErrorMessage(err));
+      console.error('[AdminLogin] Firebase auth error:', err);
+      console.error('[AdminLogin] Error code:', err?.code);
+      console.error('[AdminLogin] Error message:', err?.message);
+      setError(formatFirebaseError(err));
       setLoading(false);
     }
   }
@@ -87,7 +106,9 @@ function AdminLogin() {
           </div>
 
           {error && (
-            <p className="text-sm text-[var(--danger)] text-center">{error}</p>
+            <p className="text-sm text-[var(--danger)] text-center break-words" dir="ltr">
+              {error}
+            </p>
           )}
 
           <button
