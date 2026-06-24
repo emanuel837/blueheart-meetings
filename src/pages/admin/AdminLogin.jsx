@@ -1,37 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Lock } from 'lucide-react';
 import { auth } from '../../firebase/config';
-import { isAdminSetupComplete } from '../../firebase/setup';
 import { useAuth } from '../../context/AuthContext';
 import { getAuthErrorMessage } from '../../utils/authErrors';
 
 function AdminLogin() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
-  const [setupComplete, setSetupComplete] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    isAdminSetupComplete()
-      .then(setSetupComplete)
-      .catch(() => setSetupComplete(false));
-  }, []);
-
-  if (authLoading || setupComplete === null) {
+  if (authLoading) {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <p className="text-gray-500">טוען...</p>
       </main>
     );
-  }
-
-  if (!setupComplete) {
-    return <Navigate to="/admin/setup" replace />;
   }
 
   if (user) {
@@ -45,7 +33,7 @@ function AdminLogin() {
 
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password);
-      navigate('/admin/dashboard');
+      navigate('/admin/dashboard', { replace: true });
     } catch (err) {
       setError(getAuthErrorMessage(err));
       setLoading(false);
@@ -53,7 +41,7 @@ function AdminLogin() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4" dir="rtl">
       <div className="w-full max-w-md rounded-2xl bg-white border border-gray-200 p-8 shadow-sm">
         <div className="text-center mb-8">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--primary)]/10">
